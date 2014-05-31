@@ -1,0 +1,2 @@
+true:package(core),thread,annot,debugging
+true:warn_A, warn_e
