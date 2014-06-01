@@ -1,7 +1,7 @@
 (* -*- coding: utf-8 -*- *)
 
 open Core.Std
-open Optutil
+let (//) = Optutil.(//)
 
 type t = {
   ic: in_channel;

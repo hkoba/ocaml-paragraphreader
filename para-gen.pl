@@ -3,5 +3,22 @@
 use strict;
 use warnings FATAL => qw/all/;
 
-my ($nPars, $nParChars, $nSepChars) = @ARGV;
-print "A" x ($nParChars // 1), "\n" x ($nSepChars // 2) for 1 .. ($nPars // 10);
+my ($nPars, $nLineChars, $nLines, $nSepChars) = @ARGV;
+
+for (1 .. KMG($nPars // 10)) {
+  print "A" x KMG($nLineChars // 1), "\n" for 1 .. KMG($nLines // 8);
+  print "\n" x KMG($nSepChars // 2);
+}
+
+sub KMG {
+  my ($val) = @_;
+  if ($val =~ s/K$//) {
+    $val * 1024
+  } elsif ($val =~ s/M$//) {
+    $val * 1024 * 1024
+  } elsif ($val =~ s/G$//) {
+    $val * 1024 * 1024 * 1024
+  } else {
+    $val
+  }
+}

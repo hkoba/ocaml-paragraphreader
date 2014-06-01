@@ -1,7 +1,7 @@
 (* -*- coding: utf-8 -*- *)
 
 open Core.Std
-open Optutil
+let (//) = Optutil.(//)
 
 (*
   Paragraph here is text section delimited by \n\n.
@@ -43,6 +43,7 @@ let emit_outbuf (_, outbuf) =
   out
 
 let lfindi ?(pos=0) ?fin str ~f =
+  (* core's lfindi does not support ~fin *)
   let fin = fin // (String.length str) in
   let rec loop str pos fin =
     if pos >= fin then
@@ -55,6 +56,7 @@ let lfindi ?(pos=0) ?fin str ~f =
   loop str pos fin
 
 let find_non_newline (readbuf, _) =
+  (* Hand-inlining, sigh... I want C++ like template specialization here. *)
   let rec lfindi_non_newline pos fin str =
     if pos >= fin then
       None
@@ -80,6 +82,7 @@ let find_non_newline (readbuf, _) =
   loop readbuf
 
 let find_end_of_paragraph ?(pos=0) ~fin str =
+  (* This too. *)
   let rec lfindi_newline pos fin str =
     if pos >= fin then
       None
@@ -103,7 +106,7 @@ let find_end_of_paragraph ?(pos=0) ~fin str =
 let read t =
   let rec loop ((readbuf, outbuf) as t) =
     (* Since find_non_newline is called before here,
-       we can assume we have Some(non newline) or None.
+       we can assume we have Some(non_newline) or None.
     *)
     match In_buffer.to_range readbuf with
     | None ->
